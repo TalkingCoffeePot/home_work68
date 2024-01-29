@@ -29,8 +29,8 @@
             </p>
             <p>{{ article.created_at }}</p>
         </div>
-        <div class="like_section d-flex flex-row">
-            <div class="col-1">
+        <div class="like_section d-flex flex-row" style="width: 10%;">
+            <div class="col">
                 <button class="btn" type="submit" id='like' name="post_id" value="{{article.pk}}">
                   {% if request.user in article.likes.all %}
                     <i class="bi bi-heart-fill text-danger fs-2"></i>
@@ -39,11 +39,12 @@
                   {% endif %}
                 </button>
             </div>
-            <div class="col-1">
+            <div class="col">
               <h6 id="like_count" class="fs-1" data-artId="{{article.pk}}">{{article.likes.all.count}} {{article.is_liked}}</h6>
             </div>
         </div>
     </div>
+    {% if user.is_authenticated %}
     <script type="text/javascript">
         $(document).on('click', '#like', function(e){
             const artId = $(this).val()
@@ -68,6 +69,7 @@
             })
         })
     </script>
+    {% endif %}
     <h3 class="mt-2">Comments: </h3>
     <div class="row row-cols-3 mt-2">
         {% for comment in comments %}
@@ -88,7 +90,7 @@
                         {% endif %}
                     </div>
                     <div class="like_section d-flex flex-row">
-                        <div class="col-1">
+                        <div class="col">
                             <button class="btn" type="submit" id='like_comment' name="post_id" value="{{comment.pk}}">
                               {% if request.user in comment.likes.all %}
                                 <i class="bi bi-heart-fill text-danger fs-2"></i>
@@ -97,13 +99,14 @@
                               {% endif %}
                             </button>
                         </div>
-                        <div class="col-1">
+                        <div class="col">
                           <h6 id="like_count_comments" class="fs-1" data-commentId="{{comment.pk}}">{{comment.likes.all.count}} {{comment.is_liked}}</h6>
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
+        {% if user.is_authenticated %}
         <script type="text/javascript">
             $(document).on('click', '#like_comment', function(e){
                 const commentId = $(this).val()
@@ -128,5 +131,6 @@
                 })
             })
         </script>
+        {% endif %}
     </div>
 {% endblock %}

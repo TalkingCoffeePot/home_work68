@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
@@ -9,7 +10,6 @@ from django.db.models import Q
 from webapp.models import Article
 from webapp.forms import ArticleForm, SimpleSearchForm
 from django.views.generic import View, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
-
 
 
 

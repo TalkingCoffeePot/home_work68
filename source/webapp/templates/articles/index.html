@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block menu %}
     {% if request.user.is_authenticated %}
     <a class="nav-link" aria-current="page" href="{% url 'webapp:article_create' %}">Создать статью</a>

@@ -42,3 +42,8 @@ h1 {
     text-align: center;
     border: solid 1px gray;
 }
+
+.like_section {
+    width: 30%;
+    margin-left: auto;
+}
