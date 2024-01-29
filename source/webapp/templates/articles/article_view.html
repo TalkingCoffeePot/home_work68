@@ -42,9 +42,32 @@
             <div class="col-1">
               <h6 id="like_count" class="fs-1" data-artId="{{article.pk}}">{{article.likes.all.count}} {{article.is_liked}}</h6>
             </div>
-          </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).on('click', '#like', function(e){
+            const artId = $(this).val()
+            const btn = this
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'webapp:like_post' %}",
+                data: {
+                    postid: $(this).val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json) {
+                    let c = `"${artId}"`
+                    btn.innerHTML = json['icon']
+                    let counter = document.querySelector(`[data-artId=${c}]`)
+                    counter.innerHTML = json['count']
+                },
+                error: function(xhr, errmsg, err){
+                }
+            })
+        })
+    </script>
     <h3 class="mt-2">Comments: </h3>
     <div class="row row-cols-3 mt-2">
         {% for comment in comments %}
@@ -64,8 +87,46 @@
                             <a href="{% url 'webapp:comment_delete_view' pk=comment.pk %}" class="card-link">Удалить</a>
                         {% endif %}
                     </div>
+                    <div class="like_section d-flex flex-row">
+                        <div class="col-1">
+                            <button class="btn" type="submit" id='like_comment' name="post_id" value="{{comment.pk}}">
+                              {% if request.user in article.likes.all %}
+                                <i class="bi bi-heart-fill text-danger fs-2"></i>
+                              {% else %}
+                                <i class="bi bi-heart text-danger fs-2"></i>
+                              {% endif %}
+                            </button>
+                        </div>
+                        <div class="col-1">
+                          <h6 id="like_count_comments" class="fs-1" data-commentId="{{comment.pk}}">{{comment.likes.all.count}} {{comment.is_liked}}</h6>
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endfor %}
+        <script type="text/javascript">
+            $(document).on('click', '#like_comment', function(e){
+                const commentId = $(this).val()
+                const btn = this
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'webapp:like_comment' %}",
+                    data: {
+                        postid: $(this).val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json) {
+                        let c = `"${commentId}"`
+                        btn.innerHTML = json['icon']
+                        let counter = document.querySelector(`[data-commentId=${c}]`)
+                        counter.innerHTML = json['count']
+                    },
+                    error: function(xhr, errmsg, err){
+                    }
+                })
+            })
+        </script>
     </div>
 {% endblock %}
