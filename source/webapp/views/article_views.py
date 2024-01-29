@@ -17,11 +17,14 @@ from django.views.generic import View, FormView, ListView, DetailView, CreateVie
 def post_like_view(request):
     post = Article.objects.get(id=request.POST.get('postid'))
     print(post.id)
+    icon = ''
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
+        icon = '<i class="bi bi-heart text-danger fs-2"></i>'
     else:
         post.likes.add(request.user)
-    return JsonResponse({'count': post.likes.count()})
+        icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
+    return JsonResponse({'count': post.likes.count(), 'icon': icon})
 
 class IndexView(ListView):
     model = Article

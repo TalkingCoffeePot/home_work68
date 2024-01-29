@@ -29,6 +29,21 @@
             </p>
             <p>{{ article.created_at }}</p>
         </div>
+        <div class="like_section d-flex flex-row">
+            <div class="col-1">
+                <button class="btn" type="submit" id='like' name="post_id" value="{{article.pk}}">
+                  {% if request.user in article.likes.all %}
+                    <i class="bi bi-heart-fill text-danger fs-2"></i>
+                  {% else %}
+                    <i class="bi bi-heart text-danger fs-2"></i>
+                  {% endif %}
+                </button>
+            </div>
+            <div class="col-1">
+              <h6 id="like_count" class="fs-1" data-artId="{{article.pk}}">{{article.likes.all.count}} {{article.is_liked}}</h6>
+            </div>
+          </div>
+        </div>
     </div>
     <h3 class="mt-2">Comments: </h3>
     <div class="row row-cols-3 mt-2">
