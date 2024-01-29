@@ -90,7 +90,7 @@
                     <div class="like_section d-flex flex-row">
                         <div class="col-1">
                             <button class="btn" type="submit" id='like_comment' name="post_id" value="{{comment.pk}}">
-                              {% if request.user in article.likes.all %}
+                              {% if request.user in comment.likes.all %}
                                 <i class="bi bi-heart-fill text-danger fs-2"></i>
                               {% else %}
                                 <i class="bi bi-heart text-danger fs-2"></i>
@@ -113,7 +113,7 @@
                     type: 'POST',
                     url: "{% url 'webapp:like_comment' %}",
                     data: {
-                        postid: $(this).val(),
+                        commentid: $(this).val(),
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                         action: 'post'
                     },

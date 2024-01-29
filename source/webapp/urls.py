@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import RedirectView
 from webapp.views import IndexView, ArticleCreateView, ArticleView, ArticleUpdateView, ArticleDeleteView, \
-    CommentCreateView, CommentUpdateView, CommentDeleteView, post_like_view
+    CommentCreateView, CommentUpdateView, CommentDeleteView, post_like_view, comment_like_view
 
 app_name = 'webapp'
 

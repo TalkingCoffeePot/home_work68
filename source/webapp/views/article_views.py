@@ -16,7 +16,6 @@ from django.views.generic import View, FormView, ListView, DetailView, CreateVie
 
 def post_like_view(request):
     post = Article.objects.get(id=request.POST.get('postid'))
-    print(post.id)
     icon = ''
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)

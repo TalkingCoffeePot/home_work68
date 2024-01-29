@@ -4,19 +4,19 @@ from webapp.models import Comment, Article
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect
 from webapp.forms import CommentForm
+from django.http import JsonResponse
 
 
-def post_like_view(request):
-    post = Article.objects.get(id=request.POST.get('postid'))
-    print(post.id)
+def comment_like_view(request):
+    comment = Comment.objects.get(id=request.POST.get('commentid'))
     icon = ''
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
         icon = '<i class="bi bi-heart text-danger fs-2"></i>'
     else:
-        post.likes.add(request.user)
+        comment.likes.add(request.user)
         icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
-    return JsonResponse({'count': post.likes.count(), 'icon': icon})
+    return JsonResponse({'count': comment.likes.count(), 'icon': icon})
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'comments/comment_create.html'
