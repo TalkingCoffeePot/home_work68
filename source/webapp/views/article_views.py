@@ -2,12 +2,26 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 from django.db.models import Q
 from webapp.models import Article
 from webapp.forms import ArticleForm, SimpleSearchForm
 from django.views.generic import View, FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
+
+
+
+
+def post_like_view(request):
+    post = Article.objects.get(id=request.POST.get('postid'))
+    print(post.id)
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return JsonResponse({'count': post.likes.count()})
 
 class IndexView(ListView):
     model = Article

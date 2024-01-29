@@ -3,7 +3,6 @@
     {% endif %} 
 
     <div class="row row-cols-3">
-
         {% for article in articles %}
             <div class="col">
                 <div class="card my-3">
@@ -23,11 +22,48 @@
                     {% if perms.webapp.delete_article or article.author == request.user %}
                         <a href="{% url 'webapp:article_delete_view' pk=article.pk %}" class="card-link">Удалить</a>
                     {% endif %}
+
+                    <div class="like_section d-flex flex-row">
+                        <div class="col-1">
+                            <button class="btn" type="submit" id='like' name="post_id" value="{{article.pk}}">
+                              {% if request.user in article.likes.all %}
+                                <i class="bi bi-heart-fill text-danger fs-2"></i>
+                              {% else %}
+                                <i class="bi bi-heart text-danger fs-2"></i>
+                              {% endif %}
+                            </button>
+                        </div>
+                        <div class="col-1">
+                          <h6 id="like_count" class="fs-1">{{article.likes.all.count}} {{article.is_liked}}</h6>
+                        </div>
+                      </div>
+
+
                     </div>
                 </div>
             </div>
             {% empty %}
             <p>Нет статей</p>
-
         {% endfor %}
+        <script type="text/javascript">
+            $(document).on('click', '#like', function(e){
+                console.log($(this).val())
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'webapp:like_post' %}",
+                    data: {
+                        postid: $(this).val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json) {
+                        $('#like_count')[0].innerHTML = json['count']
+                        console.log(json)
+                    },
+                    error: function(xhr, errmsg, err){
+                    }
+                })
+            })
+        </script>
     </div>
