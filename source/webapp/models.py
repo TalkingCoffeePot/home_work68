@@ -18,6 +18,7 @@ class Article(AbstractModel):
     content = models.TextField(max_length=3000, null=False, blank=False, verbose_name='Контент')
     author = models.ForeignKey(get_user_model(), default=1, related_name='articles', on_delete=models.CASCADE, verbose_name="Автор")
     tags = models.ManyToManyField('webapp.Tag', blank=True, related_name='articles', verbose_name='Теги')
+    likes = models.ManyToManyField(get_user_model(), related_name='article_likes', blank=True)
 
     def __str__(self):
         return f'{self.id}. {self.title}'
@@ -30,8 +31,8 @@ class Comment(AbstractModel):
     article = models.ForeignKey('webapp.Article', related_name='comments', on_delete=models.CASCADE,
                                 verbose_name='Статья')
     text = models.TextField(max_length=400, verbose_name='Комментарий')
-
     author = models.ForeignKey(get_user_model(), default=1, related_name='comments', on_delete=models.CASCADE, verbose_name="Автор")
+    likes = models.ManyToManyField(get_user_model(), related_name='comment_likes', blank=True)
 
     def __str__(self):
         return self.text[:20]
